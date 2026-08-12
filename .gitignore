@@ -1,0 +1,54 @@
+# Secrets and local environment files -------------------------------------
+.env
+.env.*
+!.env.example
+.Renviron
+.Renviron.*
+!.Renviron.example
+*.pem
+*.key
+credentials.*
+secrets.*
+
+# R and RStudio local state ----------------------------------------------
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+renv/library/
+renv/staging/
+packrat/lib*/
+Rplots.pdf
+
+# Raw and derived record-level data --------------------------------------
+# EDDMapS source records include names, phone numbers, email addresses,
+# free-text comments and precise locations. Keep all data products local.
+data/data_raw/
+data/data_intermediate/
+data/data_clean/
+exports/
+
+# Generated outputs and logs ---------------------------------------------
+# Logs contain local filesystem paths. Maps and QA files are reproducible.
+logs/
+outputs/
+
+# Sanitized release candidates -------------------------------------------
+# Privacy-reviewed, but keep untracked until EDDMapS redistribution terms
+# are confirmed. Remove these two rules only after that licensing review.
+public/data/
+public/qa/
+
+# Temporary and operating-system files -----------------------------------
+*.tmp
+*.temp
+*.bak
+*.swp
+~$*
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/editor settings -----------------------------------------------------
+.vscode/
+.idea/
