@@ -47,14 +47,14 @@ docs/                 Maintenance notes and retrospective
 source("run_all.R")
 ```
 
-The scripts require `dplyr`, `readr`, `stringr`, `tidyr`, `purrr`, `tibble`, `janitor`, `sf`, `ggplot2`, `scales`, `leaflet`, `htmlwidgets` and `jsonlite`. A successful run prints row-count diagnostics, writes logs and uses `beepr` when installed.
+The scripts require `dplyr`, `readr`, `stringr`, `tidyr`, `purrr`, `tibble`, `janitor`, `sf`, `ggplot2`, `scales`, `leaflet`, `htmlwidgets`, `jsonlite`, `tigris`, `cowplot` and `jpeg`. A successful run prints row-count diagnostics, writes logs and uses `beepr` when installed. The mapping stage requires internet access on its first run to download 2025 Census cartographic state and Georgia county boundaries; `tigris_use_cache = TRUE` reuses the local copies afterward.
 
 ## Script guide
 
 - `R/01_inventory_raw_data.R`: reads both ZIP files in place; generates hashes, member inventory, field profiles and intermediate R objects.
 - `R/02_clean_georgia_southern.R`: standardizes selected Darwin Core fields, preserves IDs, applies the documented taxonomic filter, checks coordinates and exports lizard GeoJSON.
 - `R/03_clean_eddmaps.R`: cleans point, polygon and revisit layers, parses dates conservatively, compares reported coordinates with point geometry, validates geometry and checks revisit links.
-- `R/04_qa_and_maps.R`: confirms WGS84 outputs, writes final QA, creates a watermarked static map and an interactive Leaflet map, and generates the reporter brief.
+- `R/04_qa_and_maps.R`: downloads 2025 Census cartographic state and Georgia county boundaries through `tigris`, highlights Tattnall and Toombs counties, confirms WGS84 outputs, adds the attributed CC BY tegu photograph, creates static and interactive maps, and generates the reporter brief.
 
 ## Source data
 
