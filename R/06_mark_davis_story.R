@@ -18,27 +18,27 @@ if (!file.exists(points_path) || !file.exists(revisits_path)) {
   stop("Run R/03_clean_eddmaps.R before R/06_mark_davis_story.R.")
 }
 
-points <- sf::st_read(points_path, quiet = TRUE) |>
+points <- sf::st_read(points_path, quiet = TRUE) %>%
   sf::st_transform(4326)
-revisits <- sf::st_read(revisits_path, quiet = TRUE) |>
+revisits <- sf::st_read(revisits_path, quiet = TRUE) %>%
   sf::st_transform(4326)
 
 boundary_vintage <- 2025L
 georgia <- tigris::states(
   cb = TRUE, resolution = "500k", year = boundary_vintage,
   progress_bar = FALSE
-) |>
-  dplyr::filter(STUSPS == "GA") |>
+) %>%
+  dplyr::filter(STUSPS == "GA") %>%
   sf::st_transform(4326)
 
 georgia_counties <- tigris::counties(
   state = "GA", cb = TRUE, resolution = "500k", year = boundary_vintage,
   progress_bar = FALSE
-) |>
+) %>%
   sf::st_transform(4326)
 
-story_counties <- georgia_counties |>
-  dplyr::filter(NAME %in% c("Tattnall", "Toombs")) |>
+story_counties <- georgia_counties %>%
+  dplyr::filter(NAME %in% c("Tattnall", "Toombs")) %>%
   dplyr::select(GEOID, NAME, NAMELSAD, geometry)
 
 if (nrow(georgia) != 1L) stop("Expected one Georgia state feature.")
@@ -60,8 +60,8 @@ extract_point_table <- function(x, revisit = FALSE) {
     latitude <- xy[, 2]
     longitude <- xy[, 1]
   }
-  base <- x |>
-    sf::st_drop_geometry() |>
+  base <- x %>%
+    sf::st_drop_geometry() %>%
     dplyr::mutate(
       latitude = latitude,
       longitude = longitude,
@@ -69,7 +69,7 @@ extract_point_table <- function(x, revisit = FALSE) {
     )
 
   if (revisit) {
-    base |>
+    base %>%
       dplyr::transmute(
         source,
         revisit_id = source_record_id,
@@ -85,7 +85,7 @@ extract_point_table <- function(x, revisit = FALSE) {
         longitude
       )
   } else {
-    base |>
+    base %>%
       dplyr::transmute(
         source,
         observation_id = source_record_id,
@@ -118,14 +118,14 @@ sf::st_write(
 )
 
 county_label_points <- suppressWarnings(
-  story_counties |>
-    sf::st_transform(5070) |>
-    sf::st_point_on_surface() |>
+  story_counties %>%
+    sf::st_transform(5070) %>%
+    sf::st_point_on_surface() %>%
     sf::st_transform(4326)
 )
 county_label_xy <- sf::st_coordinates(county_label_points)
-county_labels <- county_label_points |>
-  sf::st_drop_geometry() |>
+county_labels <- county_label_points %>%
+  sf::st_drop_geometry() %>%
   dplyr::mutate(
     x = county_label_xy[, "X"],
     y = county_label_xy[, "Y"],
@@ -168,13 +168,13 @@ map_plot <- ggplot2::ggplot() +
     name = NULL
   ) +
   ggplot2::labs(
-    title = "Reported Argentine black and white tegu records in Georgia",
+    title = "Reported Argentine black-and-white tegu sightings in Georgia",
     subtitle = paste0(
       scales::comma(nrow(points_ga)), " sightings and ",
-      scales::comma(nrow(revisits_ga)), " follow-up revisits in this EDDMapS download"
+      scales::comma(nrow(revisits_ga)), " follow-up revisits in this EDDMapS download."
     ),
     caption = paste0(
-      "Sources: EDDMapS; ", boundary_vintage,
+      "Sources: EDDMapS (Univ. of Georgia-Center for Invasive Species and Ecosystem Health);\n", boundary_vintage,
       " U.S. Census Bureau cartographic boundaries via tigris. ",
       "Reports are not a population estimate. WGS84. Created ", run_date, "."
     )
@@ -186,7 +186,7 @@ map_plot <- ggplot2::ggplot() +
   ) +
   ggplot2::annotate(
     "text", x = -83.7, y = 32.4,
-    label = "AJC • INTERNAL REVIEW",
+    label = "NOT FOR PUBLICATION",
     angle = 32, alpha = 0.16, size = 11,
     fontface = "bold", color = "gray30"
   )
@@ -212,3 +212,7 @@ log_message(
   "Georgia-only story package complete: ", nrow(points_ga), " sightings, ",
   nrow(revisits_ga), " revisits and ", nrow(story_counties), " county polygons."
 )
+
+print(map_plot)
+
+map_plot
