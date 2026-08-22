@@ -55,6 +55,7 @@ The scripts require `dplyr`, `readr`, `stringr`, `tidyr`, `purrr`, `tibble`, `ja
 - `R/02_clean_georgia_southern.R`: standardizes selected Darwin Core fields, preserves IDs, applies the documented taxonomic filter, checks coordinates and exports lizard GeoJSON.
 - `R/03_clean_eddmaps.R`: cleans point, polygon and revisit layers, parses dates conservatively, compares reported coordinates with point geometry, validates geometry and checks revisit links.
 - `R/04_qa_and_maps.R`: downloads 2025 Census cartographic state and Georgia county boundaries through `tigris`, highlights Tattnall and Toombs counties, confirms WGS84 outputs, adds the attributed CC BY tegu photograph, creates static and interactive maps, and generates the reporter brief.
+- `R/06_mark_davis_story.R`: spatially filters EDDMapS sightings and revisits to Georgia, exports Datawrapper-ready longitude/latitude CSVs and a WGS84 Toombs–Tattnall GeoJSON, and creates a watermarked Georgia-only internal-review map without the tegu photograph.
 
 ## Source data
 
