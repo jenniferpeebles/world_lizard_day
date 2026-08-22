@@ -24,8 +24,8 @@ edd_revisits <- sf::st_read(
 # record and try to redact risky fields afterward. That approach can miss PII
 # hidden in comments, locality, reporter or other free-text columns.
 point_xy <- sf::st_coordinates(edd_points)
-edd_points_public <- edd_points |>
-  sf::st_drop_geometry() |>
+edd_points_public <- edd_points %>%
+  sf::st_drop_geometry() %>%
   dplyr::transmute(
     source = "EDDMapS",
     source_record_id = as.character(source_record_id),
@@ -40,7 +40,7 @@ edd_points_public <- edd_points |>
     public_latitude = round(point_xy[, "Y"], 2),
     public_longitude = round(point_xy[, "X"], 2),
     coordinate_generalization = "Rounded to 0.01 degree for public release"
-  ) |>
+  ) %>%
   sf::st_as_sf(
     coords = c("public_longitude", "public_latitude"),
     crs = 4326,
@@ -48,8 +48,8 @@ edd_points_public <- edd_points |>
   )
 
 revisit_xy <- sf::st_coordinates(edd_revisits)
-edd_revisits_public <- edd_revisits |>
-  sf::st_drop_geometry() |>
+edd_revisits_public <- edd_revisits %>%
+  sf::st_drop_geometry() %>%
   dplyr::transmute(
     source = "EDDMapS revisit",
     source_record_id = as.character(source_record_id),
@@ -65,7 +65,7 @@ edd_revisits_public <- edd_revisits |>
     public_latitude = round(revisit_xy[, "Y"], 2),
     public_longitude = round(revisit_xy[, "X"], 2),
     coordinate_generalization = "Rounded to 0.01 degree for public release"
-  ) |>
+  ) %>%
   sf::st_as_sf(
     coords = c("public_longitude", "public_latitude"),
     crs = 4326,

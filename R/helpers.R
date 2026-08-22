@@ -3,7 +3,7 @@
 required_packages <- c(
   "dplyr", "readr", "stringr", "tidyr", "purrr", "tibble", "janitor",
   "sf", "ggplot2", "scales", "leaflet", "htmlwidgets", "jsonlite", "tigris",
-  "cowplot", "jpeg"
+  "cowplot", "jpeg", "tidyverse"
 )
 
 check_packages <- function(packages = required_packages) {

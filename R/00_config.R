@@ -9,6 +9,8 @@ options(
   stringsAsFactors = FALSE
 )
 
+library("tidyverse")
+
 # Run scripts from the repository root. The project path is resolved at run
 # time so usernames, employers and machine-specific paths are never embedded
 # in version-controlled code. Do not put ordinary settings in .Renviron; that
