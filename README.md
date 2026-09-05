@@ -1,8 +1,26 @@
 # World Lizard Day
 
-This repository inventories, cleans and maps two public biodiversity downloads: the Georgia Southern University Herpetology Collection Darwin Core Archive and an EDDMapS download of Argentine black and white tegu records. The workflow is written in R, preserves the supplied raw files byte-for-byte, and creates review-ready QA, clean tables, WGS84 GeoJSON, static maps and an interactive map.
+It's a day to love lizards.
+
+In celebration of World Lizard Day (2026, as I write this), here's an R code project that looks at, cleans and seeks to map two sets of biodiversity data. 
+
+The first is the material in the [Georgia Southern University Herpetology Collection](https://sites.google.com/georgiasouthern.edu/herpgsu) Darwin Core Archive and seeks to cover all the lizards they have. They claim to be Georgia's second-largest herpetology collection, with 35,000 specimens on offer. 
+
+The second looks specifically at an invasive lizard that has been stirring up a hornet's nest in two very rural Georgia counties, the [Argentine black and white tegu](https://www.ajc.com/news/2026/08/as-tegu-sightings-rise-in-south-georgia-residents-take-up-arms/). This fellow is the polar opposite of the lovable GEICO gecko: Adults can grow up to four and a half feet long, these guys look anything but friendly, and their skin looks more like something that belongs on a venomous snake. 
+
+The invasive tegu is of great interest to me because, wherever it came from (Georgia wildlife officials believe someone dumped one or more of them), it has mostly been sighted in Toombs and Tattnall counties, not terribly far from where my father's entire family has lived for generations. 
+
+The tegu element of the project is a download of tegu sighting records maintained by EDDMapS, which is project of the [University of Georgia's Center for Invasive Species and Ecosystem Health](https://www.bugwood.org/). 
+
+The workflow is written in R, preserves the supplied raw files byte-for-byte, and creates review-ready QA, clean tables, WGS84 GeoJSON, static maps and an interactive map.
 
 The project code is available under the [MIT License](LICENSE). Source-data and derived-data reuse remains subject to the terms of the respective data providers.
+
+Two important notes about the EDDmapS data. First of all, it appears to be largely on the honor system, and Jennifer does not personally make any claims about the accuracy of the data. Each entry appears to be a record in which someone claimed they saw the given invasive species. I don't believe anyone from EDDmapS or any other authority figure personally goes back and verifies the sighting (totally understandable).
+
+As of this most recent data pull, it appears there have been tegu sightings reported in Georgia in most of the major urban core counties of Atlanta and one reported just southeast of Chattanooga. Unless there is a tegu that was just really dying to get up to the mountains and see the leaves turn color, we have a hard time believing anyone spotted a tegu in the wild outside Chattanooga. 
+
+Also, be careful of privacy concerns when you're working with the data. EDDmapS data downloads can sometimes include personally identifying information about the people who reported having seen those invasive species. So be careful about any changes you make to the code that takes any part of the data and makes it public-facing. Though we admit we would be interested in talking to the people who said they spotted tegus in Atlanta.  
 
 ## What the project does
 
@@ -52,7 +70,7 @@ The scripts require `dplyr`, `readr`, `stringr`, `tidyr`, `purrr`, `tibble`, `ja
 ## Script guide
 
 - `R/01_inventory_raw_data.R`: reads both ZIP files in place; generates hashes, member inventory, field profiles and intermediate R objects.
-- `R/02_clean_georgia_southern.R`: standardizes selected Darwin Core fields, preserves IDs, applies the documented taxonomic filter, checks coordinates and exports lizard GeoJSON.
+- `R/02_clean_georgia_southern.R`: standardizes selected Darwin Core fields, preserves IDs, applies the documented taxonomic filter, checks coordinates and exports lizard GeoJSON. This may not be the first time the term "lizard GeoJSON" has ever been used in the English language, but certainly, it's one of the few times. 
 - `R/03_clean_eddmaps.R`: cleans point, polygon and revisit layers, parses dates conservatively, compares reported coordinates with point geometry, validates geometry and checks revisit links.
 - `R/04_qa_and_maps.R`: downloads 2025 Census cartographic state and Georgia county boundaries through `tigris`, highlights Tattnall and Toombs counties, confirms WGS84 outputs, adds the attributed CC BY tegu photograph, creates static and interactive maps, and generates the reporter brief.
 - `R/06_mark_davis_story.R`: spatially filters EDDMapS sightings and revisits to Georgia, exports Datawrapper-ready longitude/latitude CSVs and a WGS84 Toombs–Tattnall GeoJSON, and creates a watermarked Georgia-only internal-review map without the tegu photograph.
@@ -93,3 +111,12 @@ The public repository should therefore contain the reproducible R code, methodol
 `R/05_build_public_release.R` creates an allowlisted public-release candidate under `public/`. It removes source free text and personal fields and rounds coordinates to two decimal places. The generated data remains ignored until EDDMapS redistribution terms are confirmed. See `public/README.md` for the disclosure method and limitations.
 
 Before publishing any additional summarized data or map separately, review it for personal information, sensitive locations, source terms and the minimum geographic precision needed for the reporting purpose.
+
+## Special thanks
+This project uses a number of R packages, including the [tidyverse family of packages](https://tidyverse.tidyverse.org/index.html) created by [Hadley Wickham](https://hadley.nz/) et al and the [tigris package](https://cran.r-project.org/web/packages/tigris/index.html) created by [Kyle Walker](https://walker-data.com/) that downloads and works with U.S. Census Bureau TIGER/Line geographic files. I am also very grateful for packages including [janitor](https://cran.r-project.org/web/packages/janitor/index.html) and [sf](https://cran.r-project.org/web/packages/sf/index.html), among others. Thank you to the brilliant people behind these packages who wrote all the code and keep it maintained.
+
+## Authorship
+
+A note from JP: I built this project with help from ChatGPT/Codex, which drafted this README from the project's code, outputs and my instructions (and to which I have made edits). I want to be transparent about the help I received.
+
+[Jennifer Peebles](https://www.ajc.com/staff/jennifer-peebles/) / [Atlanta Journal-Constitution](https://www.ajc.com/)
